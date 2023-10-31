@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3001/")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -43,7 +43,9 @@ public class UserController {
     }
 
 
-    @RequestMapping(path = "/add", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @RequestMapping(path = "/add", method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_JSON_VALUE},
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public   ResponseEntity<User> save(@RequestPart(value = "user",required = true) User newUser,
                                        @RequestPart(value = "photo",required = true)  MultipartFile photo,
                                        @RequestPart(value = "video",required = true)  MultipartFile video)
@@ -63,6 +65,7 @@ public class UserController {
                 User user = new User();
                 user.setUsername(newUser.getUsername());
                 user.setEmail(newUser.getEmail());
+                user.setPhone(newUser.getPhone());
                 //user.setPhoto(newUser.getPhoto());
                 user.setPhoto(bytes);
                 user.setVideo(bytes2);
