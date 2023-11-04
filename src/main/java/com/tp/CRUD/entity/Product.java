@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "product")
 @Data
+
 public class Product {
 
     @Id
@@ -22,9 +23,12 @@ public class Product {
     @Lob
     private String description;
 
+    // @Basic(fetch = FetchType.EAGER)
     @Lob
+    @Column(columnDefinition = "longblob")
     private byte[] img;
 
+    //@ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "category_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -41,6 +45,7 @@ public class Product {
         productDto.setPrice(price);
         productDto.setByteImg(img);
         productDto.setCategoryId(category.getId());
+        productDto.setCategoryName(category.getName());
         return productDto;
 
     }

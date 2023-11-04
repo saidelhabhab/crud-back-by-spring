@@ -2,8 +2,11 @@ package com.tp.CRUD.service.authservice;
 
 
 import com.tp.CRUD.entity.Customer;
+import com.tp.CRUD.entity.Order;
+import com.tp.CRUD.enums.OrderStatus;
 import com.tp.CRUD.enums.UserRole;
 import com.tp.CRUD.repository.CustomerRepo;
+import com.tp.CRUD.repository.OrderRepo;
 import com.tp.CRUD.request.CustomerDto;
 import com.tp.CRUD.request.SignupRequest;
 import jakarta.annotation.PostConstruct;
@@ -22,6 +25,9 @@ public class AuthServiceImpl implements AuthService{
     @Autowired
     private CustomerRepo customerRepo;
 
+    @Autowired
+    private OrderRepo orderRepo;
+
     @Override
     public CustomerDto createCustomer(SignupRequest signupRequest){
         Customer customer = new Customer();
@@ -32,6 +38,15 @@ public class AuthServiceImpl implements AuthService{
         customer.setRole(UserRole.CUSTOMER);
 
         Customer createUser=customerRepo.save(customer);
+
+        ///////////////Order ////////////////////
+        Order order = new Order();
+        order.setAmount(0L);
+        order.setTotalAmount(0L);
+        order.setDiscount(0L);
+        order.setCustomer(createUser);
+        order.setOrderStatus(OrderStatus.Pending);
+        orderRepo.save(order);
 
         CustomerDto customerDto= new CustomerDto();
         customerDto.setId(createUser.getId());

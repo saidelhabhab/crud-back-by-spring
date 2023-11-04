@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,4 +44,23 @@ public class AdminProductServiceImpl implements AdminProductService{
         List<Product> products = productRepo.findAll();
         return products.stream().map(Product::getDto).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProductDto> getAllProductByName(String name) {
+
+        List<Product> products = productRepo.findAllNameContaining(name);
+        return products.stream().map(Product::getDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteProduct(Long id) {
+        Optional<Product> optionalProduct = productRepo.findById(id);
+        if (optionalProduct.isPresent()){
+            productRepo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 }
