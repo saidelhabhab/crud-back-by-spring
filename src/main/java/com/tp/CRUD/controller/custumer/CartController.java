@@ -28,7 +28,7 @@ public class CartController {
     }
 
     @GetMapping("hello")
-    public String getHeloo(){
+    public String getHello(){
         return " im here";
     }
 
