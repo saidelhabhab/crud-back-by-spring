@@ -96,6 +96,7 @@ public class CartServiceImp implements CartService{
         orderDto.setDiscount(activeOrder.getDiscount());
         orderDto.setTotalAmount(activeOrder.getTotalAmount());
 
+
         orderDto.setCartItems(cartItemsDtoList);
 
         if (activeOrder.getCoupon() != null){
@@ -236,5 +237,25 @@ public class CartServiceImp implements CartService{
             return activeOrder.getOrderDto();
         }
         return null;
+    }
+
+
+    @Override
+    public List<OrderDto> getMyPlaceOrders(Long customerId){
+        return  orderRepo.findByCustomerIdAndOrderStatusIn(customerId , List.of(OrderStatus.Placed,OrderStatus.shipped,OrderStatus.Delivered))
+                .stream().map(Order::getOrderDto).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public OrderDto searchOrderByTrackingId(UUID trackingId){
+        Optional<Order> optionalOrder = orderRepo.findByTrackingId(trackingId);
+
+        if (optionalOrder.isPresent()){
+            return optionalOrder.get().getOrderDto();
+        }
+        else {
+            return  null;
+        }
     }
 }

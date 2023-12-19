@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/customer/")
 @CrossOrigin
@@ -70,5 +73,15 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placeOrder(placeOrder));
     }
+
+
+    @GetMapping("MyOrders/{customerId}")
+    public ResponseEntity<List<OrderDto>> getMyPlaceOrders(@PathVariable Long customerId){
+
+        return ResponseEntity.ok(cartService.getMyPlaceOrders(customerId));
+    }
+
+
+
 
 }

@@ -21,4 +21,6 @@ public class ProductDto {
     private String categoryName;
 
     private MultipartFile img;
+
+    private Long Quantity;
 }
